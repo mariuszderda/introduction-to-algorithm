@@ -15,7 +15,8 @@ def divide(numbers_list, start, end, debug=False):
             swap_count += 1
             (numbers_list[i], numbers_list[j]) = (numbers_list[j], numbers_list[i])
         if debug:
-            print(f"Pivot {border_value} | LIST | {numbers_list}")
+            # print(f"Pivot {border_value} | LIST | {numbers_list}")
+            print('Pivot ', '\x1b[6;30;42m' + str(border_value) + '\x1b[0m'," | LIST | ", numbers_list)
     swap_count += 1
     (numbers_list[i + 1], numbers_list[end]) = (numbers_list[end], numbers_list[i + 1])
     return i + 1

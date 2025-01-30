@@ -10,6 +10,8 @@ from quick_sort import quick_sort
 # noinspection PyUnresolvedReferences
 from shell_sort import shell_sort
 # noinspection PyUnresolvedReferences
+from hybrid_sort import hybrid_sort
+# noinspection PyUnresolvedReferences
 from numbers_generator import random_list, descending_list
 
 
@@ -27,12 +29,14 @@ def show_sorting(sorting_type, list_type, elements_numbers):
         end = len(numbers_list)
         quick_sort(numbers_list, 0, end - 1, True)
     elif sorting_type == 4:
-        pass
+        print("Wybrano algorytm QUICK SORT")
+        hybrid_sort(numbers_list, True)
 
 def sorting_benchmark(numbers_count, list_type):
     quick_sort_score = []
     insertion_sort_score = []
     shell_sort_score = []
+    hybrid_sort_score = []
 
     for i in range(0, 10):
         numbers_array = random_list(numbers_count) if list_type == "random" else descending_list(numbers_count)
@@ -40,15 +44,18 @@ def sorting_benchmark(numbers_count, list_type):
         quick_sort_array = numbers_array[:]
         insertion_sort_array = numbers_array[:]
         shell_sort_array = numbers_array[:]
+        hybrid_sort_array = numbers_array[:]
 
         end = len(numbers_array)
         comparison_quick, swap_quick = quick_sort(quick_sort_array, 0, end - 1, comp=0, swap=0)
         comparison_insertion, swap_insertion = insertion_sort(insertion_sort_array)
         comparison_shell, swap_shell = shell_sort(shell_sort_array)
+        comparison_hybrid, swap_hybrid = hybrid_sort(hybrid_sort_array)
 
         quick_sort_score.append((comparison_quick, swap_quick))
         insertion_sort_score.append((comparison_insertion, swap_insertion))
         shell_sort_score.append((comparison_shell, swap_shell))
+        hybrid_sort_score.append((comparison_hybrid, swap_hybrid))
 
     comparison_mean_quick = mean(item[0] for item in quick_sort_score)
     swap_mean_quick = mean(item[1] for item in quick_sort_score)
@@ -59,11 +66,14 @@ def sorting_benchmark(numbers_count, list_type):
     comparison_mean_shell = mean(item[0] for item in shell_sort_score)
     swap_mean_shell = mean(item[1] for item in shell_sort_score)
 
-    print(f"{"": <20}   {"QUICK": ^10} | {"INSERTION": ^10} | {"SHELL": ^10}")
+    comparison_mean_hybrid = mean(item[0] for item in hybrid_sort_score)
+    swap_mean_hybrid = mean(item[1] for item in hybrid_sort_score)
+
+    print(f"{"": <20}   {"QUICK": ^10} | {"INSERTION": ^10} | {"SHELL": ^10} | {"HYBRID": ^10}")
     # print("{:20} - {:10.0f} {:10.0f} {:10.0f}".format("comparison mean ",comparison_mean_quick, comparison_mean_insertion, comparison_mean_shell))
     print(
-        f"{"comparison mean": <20} - {comparison_mean_quick : ^10} | {comparison_mean_insertion: ^10} | {comparison_mean_shell : ^10}")
-    print(f"{"swap mean": <20} - {swap_mean_quick : ^10} | {swap_mean_insertion: ^10} | {swap_mean_shell : ^10}")
+        f"{"comparison mean": <20} - {comparison_mean_quick : ^10} | {comparison_mean_insertion: ^10} | {comparison_mean_shell : ^10} | {comparison_mean_hybrid : ^10}")
+    print(f"{"swap mean": <20} - {swap_mean_quick : ^10} | {swap_mean_insertion: ^10} | {swap_mean_shell : ^10} | {swap_mean_hybrid : ^10}")
     # print("{:20} - {:10.0f} {:10.0f} {:10.0f}".format("swap mean", swap_mean_quick, swap_mean_insertion, swap_mean_shell))
 
 if __name__ == "__main__":
