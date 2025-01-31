@@ -1,5 +1,6 @@
 from collections import deque
 
+
 class TreeNode:
     def __init__(self, value):
         self.left = None
@@ -20,6 +21,24 @@ class TreeNode:
                 self.right.content = content
             else:
                 self.right.insert(value, content)
+
+    def insert_loop(self, value):
+        while self.left or self.right is not None:
+            if value < self.value:
+                if self.left is None:
+                    break
+                self = self.left
+                continue
+            if value > self.value:
+                if self.right is None:
+                    break
+                self = self.right
+                continue
+
+        if value < self.value:
+            self.left = TreeNode(value)
+        elif value > self.value:
+            self.right = TreeNode(value)
 
     def inorder_traversal(self):
         if self.left:
@@ -80,6 +99,7 @@ class TreeNode:
 
     def level_order_traversal(self):
         queue = deque([(self, 0)])  # (węzeł, poziom)
+        print("QUEUE", queue)
         current_level = 0
         print(f"Level {current_level}:", end=" ")
 
@@ -103,40 +123,63 @@ class TreeNode:
         right_height = self.right.height() if self.right else 0
         return 1 + max(left_height, right_height)
 
-    def rotate_right(self):
+    def rotate_left(self):
         if self.right is None:
             return self
 
-        new_root = self.right
-        self.right = new_root.left
-        new_root.left = self
+        new_parent = self.right
+        new_right_leaf = self.right.right
+        new_left_value = self.value
+        new_left_leaf = self.left
+        new_left_right_leaf = self.right.left
 
-        return new_root  # Zwracamy nowy korzeń poddrzewa
+        self.value = new_parent.value
+        self.right = new_right_leaf
+        self.left = TreeNode(new_left_value)
+        self.left.left = new_left_leaf
+        self.left.right = new_left_right_leaf
+
+    def rotate_right(self):
+        if self.left is None:
+            return self
+
+        new_parent = self.left
+        new_left_leaf = self.left.left
+        new_right_value = self.value
+        new_right_leaf = self.right
+        new_right_left_leaf = self.left.right
+
+        self.value = new_parent.value
+        self.left = new_left_leaf
+        self.right = TreeNode(new_right_value)
+        self.right.right = new_right_leaf
+        self.right.left = new_right_left_leaf
+
+    def straighten_tree(self):
+        if self.left is not None:
+            self.rotate_right()
+        if self.left is None:
+            if self.right is None:
+                return
+            self.right.straighten_tree()
+
+    def dsw_algorithm(self):
+        left_height = self.left.height()
+        right_height = self.right.height()
+
+        print(left_height, right_height)
 
 
+if __name__ == "__main__":
 
-tree = TreeNode(3)
-tree.insert(1)
-tree.insert(0)
-tree.insert(2)
-tree.insert(5, {"data": "Hello World!"})
-tree.insert(6)
-tree.insert(4)
 
-tree.inorder_traversal()
-print()
-print("*" * 10)
-tree.reverse_inorder_traversal()
-print()
-print("*" * 10)
-tree.preorder_traversal()
-print()
-print("*" * 10)
-tree.level_order_traversal()
-print()
-print("*" * 10)
-print(tree.height())
-tree.rotate_right()
-print()
-print("*" * 10)
-tree.level_order_traversal()
+    tree = TreeNode(3)
+    tree.insert(1)
+    tree.insert(0)
+    tree.insert(2)
+    tree.insert(5)
+    tree.insert(6)
+    tree.insert(4)
+    tree.insert(7)
+
+    tree.dsw_algorithm()
