@@ -56,7 +56,7 @@ class TreeNode:
             self.left.reverse_inorder_traversal()
 
     def preorder_traversal(self):
-        print(self.value, sep=",", end=" ")
+        print(self.value if self.value is not None else "", sep=",", end=" ")
         if self.left:
             self.left.preorder_traversal()
         if self.right:
@@ -99,7 +99,6 @@ class TreeNode:
 
     def level_order_traversal(self):
         queue = deque([(self, 0)])  # (węzeł, poziom)
-        print("QUEUE", queue)
         current_level = 0
         print(f"Level {current_level}:", end=" ")
 
@@ -158,16 +157,13 @@ class TreeNode:
     def straighten_tree(self):
         if self.left is not None:
             self.rotate_right()
+
+            self.straighten_tree()
         if self.left is None:
             if self.right is None:
                 return
             self.right.straighten_tree()
 
-    def dsw_algorithm(self):
-        left_height = self.left.height()
-        right_height = self.right.height()
-
-        print(left_height, right_height)
 
 
 if __name__ == "__main__":
@@ -180,6 +176,83 @@ if __name__ == "__main__":
     tree.insert(5)
     tree.insert(6)
     tree.insert(4)
-    tree.insert(7)
 
-    tree.dsw_algorithm()
+    print(f"{"_"*20} Wyszukiwanie wartości {"_"*20}")
+    print(f"liczba 20 {"występuje" if tree.find(20) else "nie występuje"} w drzewie")
+    print(f"liczba 5 {"występuje" if tree.find(5) else "nie występuje"} w drzewie")
+    print()
+    print(f"{"_"*20} Wyświetlanie {"_"*20}")
+    print("PreOrder")
+    tree.preorder_traversal()
+    print()
+    print("PostOrder")
+    tree.postorder_traversal()
+    print()
+    print("InOrder")
+    tree.inorder_traversal()
+    print()
+    print("Reverse InOrder")
+    tree.reverse_inorder_traversal()
+    print()
+    print()
+    print(f"{"_"*20} Level Order {"_"*20}")
+    tree.level_order_traversal()
+    print(f"Height: {tree.height()}")
+    print("="*50)
+    print(f"{"_" * 20} Rotacja w lewo {"_" * 20}")
+    tree.rotate_left()
+    print("PreOrder")
+    tree.preorder_traversal()
+    print()
+    print("PostOrder")
+    tree.postorder_traversal()
+    print()
+    print("InOrder")
+    tree.inorder_traversal()
+    print()
+    print("Reverse InOrder")
+    tree.reverse_inorder_traversal()
+    print()
+    print()
+    print(f"{"_" * 20} Level Order {"_" * 20}")
+    print(tree.level_order_traversal())
+    print(f"Height: {tree.height()}")
+    print("=" * 50)
+    print(f"{"_" * 20} Rotacja w lewo {"_" * 20}")
+    tree.rotate_right()
+    print("PreOrder")
+    tree.preorder_traversal()
+    print()
+    print("PostOrder")
+    tree.postorder_traversal()
+    print()
+    print("InOrder")
+    tree.inorder_traversal()
+    print()
+    print("Reverse InOrder")
+    tree.reverse_inorder_traversal()
+    print()
+    print(f"{"_" * 20} Level Order {"_" * 20}")
+    tree.level_order_traversal()
+    print(f"Height: {tree.height()}")
+    print(f"{"_" * 20} Prostowanie drzewa {"_" * 20}")
+    tree.straighten_tree()
+    print("PreOrder")
+    tree.preorder_traversal()
+    print()
+    print("PostOrder")
+    tree.postorder_traversal()
+    print()
+    print("InOrder")
+    tree.inorder_traversal()
+    print()
+    print("Reverse InOrder")
+    tree.reverse_inorder_traversal()
+    print()
+    print(f"{"_" * 20} Level Order {"_" * 20}")
+    tree.level_order_traversal()
+    print(f"Height: {tree.height()}")
+
+
+
+
